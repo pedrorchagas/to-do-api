@@ -3,11 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var redis = require('./services/redis')
+var redis = require('../helpers/redis')
 
 
 var indexRouter = require('./routes/index');
 var signupRouter = require('./routes/signup');
+var loginRouter = require('./routes/login')
 
 var authMiddleware = require('./middlewares/auth')
 var testMiddleware = require('./middlewares/teste')
@@ -28,6 +29,7 @@ redis.createConnection();
 
 app.use('/', indexRouter);
 app.use('/signup', signupRouter);
+app.use('/login', authMiddleware , loginRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

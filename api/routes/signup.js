@@ -4,7 +4,11 @@ var signup = require('../controllers/signup')
 
 /* GET home page. */
 router.post('/', async function(req, res, next) {
-    await signup.create(req, res)
+    try {
+        await signup.create(req, res)
+    } catch(error) {
+        res.status(error.code || 500).send({message: error.message})
+    }
 });
 
 module.exports = router;

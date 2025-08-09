@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const sequelize_helper = require('../../helpers/sequelize')
 const { Sequelize } = require('sequelize')
+const error_helper = require('../../helpers/errors')
 
 async function create(req, res) {
     const sequelize = await sequelize_helper.getConnection();
@@ -17,6 +18,7 @@ async function create(req, res) {
         res.status(200).send({message: "Usuário criado com sucesso!"})
     } catch(error) {
         console.log(error)
+        throw error_helper.cantCreateUser
     }
 }
 
