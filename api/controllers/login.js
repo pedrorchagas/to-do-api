@@ -7,13 +7,34 @@ const error_helper = require('../../helpers/errors')
 async function login(req, res) {
     try {
         const sequelize = await sequelize_helper.getConnection()
-        console.log(req.body)
-        var name = req.body.name
-        var password = req.body.password
+        let username;
+        let password;
+
+        if (req.headers.authorization) {
+            const authHeader = req.headers.authorization
+            if (authHeader.startsWith('Basic')) {
+                const base64Part = authHeader.substring('Basic '.length)
+                const decodedCredentials = Buffer.from(base64Part, 'base64').toString('utf8')
+                const [basicUser, basicPass] = decodedCredentials.split(':')
+
+                username = basicUser;
+                password = basicPass;
+            }
+        } else if (req.body) {
+            username = req.body.name
+            password = req.body.password
+        }
+
+        if (!username || !password) {
+            throw error_helper.credentialsNotFound
+        }
 
         const user = await User(sequelize, Sequelize.DataTypes).findOne({
             where: {
-                name: name,
+                [Sequelize.Op.or]: [
+                    { name: username },
+                    { email: username } 
+                ],
                 password: password,
                 active: true
             }
@@ -29,7 +50,7 @@ async function login(req, res) {
             throw error_helper.userNotFound
         }
     } catch(error) {
-        console.log(error)
+        throw error
     }
 
 }

@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+const user = require('../controllers/user')
 
 // Puxa a informação sobre o usuário
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', async function(req, res, next) {
+  await user.getUser(req, res)
 });
 
 // Deleta o registro do usuário

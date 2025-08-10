@@ -9,6 +9,7 @@ var redis = require('../helpers/redis')
 var indexRouter = require('./routes/index');
 var signupRouter = require('./routes/signup');
 var loginRouter = require('./routes/login')
+var userRouter = require('./routes/user')
 
 var authMiddleware = require('./middlewares/auth')
 var testMiddleware = require('./middlewares/teste')
@@ -29,7 +30,8 @@ redis.createConnection();
 
 app.use('/', indexRouter);
 app.use('/signup', signupRouter);
-app.use('/login', authMiddleware , loginRouter)
+app.use('/login', loginRouter)
+app.use('/user', authMiddleware, userRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
