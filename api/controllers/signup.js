@@ -1,6 +1,5 @@
 const User = require('../models/user')
 const sequelize_helper = require('../../helpers/sequelize')
-const { Sequelize } = require('sequelize')
 const error_helper = require('../../helpers/errors')
 
 async function create(req, res) {

@@ -4,17 +4,25 @@ const user = require('../controllers/user')
 
 // Puxa a informação sobre o usuário
 router.get('/', async function(req, res, next) {
-  await user.getUser(req, res)
+  try {
+    await user.getUser(req, res)
+  } catch (error) {
+    res.status(error.code || 500).send({message: error.message})
+  }
 });
 
 // Deleta o registro do usuário
-router.delete('/', function(req, res, next) {
-
+router.delete('/', async function(req, res, next) {
+  try {
+    await user.deleteUser(req, res)
+  } catch(error) {
+    res.status(error.code || 500).send({message: error.message})
+  }
 })
 
 // Edita informações sobre o usuário
-router.put('/', function(req, res, next) {
-    
+router.put('/', async function(req, res, next) {
+  await user.editUser(req, res)
 })
 
 module.exports = router;

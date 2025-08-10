@@ -2,12 +2,12 @@ const { v4: uuidv4 } = require('uuid')
 const redis_helper = require('../../helpers/redis')
 const jwt = require('jsonwebtoken')
 
-async function generateToken(userDataValue) {
+async function generateToken(user) {
     const payload = {
-        userId: userDataValue.id,
-        name: userDataValue.name,
-        phone: userDataValue.phone,
-        email: userDataValue.email,
+        id: user.id,
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
     }
 
     const secretKey = 'Chave'
