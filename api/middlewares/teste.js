@@ -1,7 +1,8 @@
-var express = require('express');
-var app = express()
+const express = require('express');
+
+const app = express();
 
 module.exports = (req, res, next) => {
-    console.log('passou aqui!!! testeeee');
-    next();
-}
+  console.log('passou aqui!!! testeeee');
+  next();
+};

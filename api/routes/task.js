@@ -1,31 +1,30 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+
+const router = express.Router();
 
 // Puxa todos as task associadas ao usuário
-router.get('/', function(req, res, next) {
+router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
 // Puxa a task específica
-router.get('/:id', function(req, res, next) {
+router.get('/:id', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
 // Edita uma task específica
-router.put('/:id', function(req, res, next) {
-
-})
+router.put('/:id', (req, res) => {
+  res.render('index', { title: 'Express' });
+});
 
 // Deleta uma task
-router.delete('/:id', function(req, res, next) {
-
-})
+router.delete('/:id', (req, res) => {
+  res.render('index', { title: 'Express' });
+});
 
 // Cria uma nova task
-route.post('/:id', function(req, res, next) {
-    
-})
-
-
+router.post('/:id', (req, res) => {
+  res.render('index', { title: 'Express' });
+});
 
 module.exports = router;
