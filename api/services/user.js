@@ -3,17 +3,25 @@ const User = require('../models/user');
 const errorHelper = require('../../helpers/errors');
 
 function getFiltro(info) {
-  const filtro = {
-    where: {
-      active: true,
-    },
-  };
+  const filtro = { where: {} };
 
-  if (info.name || info.email) {
-    filtro.where[Sequelize.Op.or] = [
-      { name: info.name },
-      { email: info.email },
-    ];
+  if (info.name) {
+    if (filtro.where[Sequelize.Op.or]) {
+      filtro.where[Sequelize.Op.or].push({ email: info.name });
+    } else {
+      filtro.where[Sequelize.Op.or] = [
+        { email: info.name },
+      ];
+    }
+  }
+  if (info.email) {
+    if (filtro.where[Sequelize.Op.or]) {
+      filtro.where[Sequelize.Op.or].push({ email: info.email });
+    } else {
+      filtro.where[Sequelize.Op.or] = [
+        { email: info.email },
+      ];
+    }
   }
 
   if (info.password) {
@@ -39,19 +47,22 @@ async function getUser(sequelize, userInfo) {
   }
 }
 
-async function deleteUser(sequelize, userInfo) {
-  await User(sequelize, Sequelize.DataTypes).update(
-    {
-      active: false,
+async function deleteUser(sequelize, userId) {
+  await User(sequelize, Sequelize.DataTypes).destroy({
+    where: {
+      id: userId,
     },
-    getFiltro(userInfo),
-  );
+  });
 }
 
-async function editUser(sequelize, userInfo, newUserInfo) {
+async function editUser(sequelize, userId, newUserInfo) {
   const user = await User(sequelize, Sequelize.DataTypes).update(
     newUserInfo,
-    getFiltro(userInfo),
+    {
+      where: {
+        id: userId,
+      },
+    },
   );
 
   return user;

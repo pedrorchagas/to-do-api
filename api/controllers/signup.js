@@ -1,26 +1,24 @@
-const User = require('../models/user')
-const sequelize_helper = require('../../helpers/sequelize')
-const error_helper = require('../../helpers/errors')
+const sequelizeHelper = require('../../helpers/sequelize');
+const errorHelper = require('../../helpers/errors');
+const userRepository = require('../repositories/user');
 
 async function create(req, res) {
-    const sequelize = await sequelize_helper.getConnection();
+  const sequelize = await sequelizeHelper.getConnection();
 
-    console.log('Body:', req.body)
-
-    try {
-        await User(sequelize, Sequelize.DataTypes).create({
-            name: req.body.name,
-            phone: req.body.phone,
-            email: req.body.email,
-            password: req.body.password
-        })
-        res.status(200).send({message: "Usuário criado com sucesso!"})
-    } catch(error) {
-        console.log(error)
-        throw error_helper.cantCreateUser
-    }
+  try {
+    const newUser = {
+      name: req.body.name,
+      phone: req.body.phone,
+      email: req.body.email,
+      password: req.body.password,
+    };
+    const user = await userRepository.createUser(sequelize, newUser);
+    res.status(200).send({ message: 'Usuário criado com sucesso!', userId: user.id });
+  } catch (error) {
+    throw errorHelper.cantCreateUser;
+  }
 }
 
 module.exports = {
-    create
-}
+  create,
+};
